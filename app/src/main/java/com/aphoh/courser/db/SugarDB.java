@@ -1,18 +1,22 @@
 package com.aphoh.courser.db;
 
+import android.util.Log;
+
 import com.aphoh.courser.model.Assignment;
 import com.aphoh.courser.model.Course;
+import com.aphoh.courser.util.LogUtil;
 
 import java.util.List;
 
 import rx.Observable;
 import rx.Subscriber;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by Will on 9/4/15.
  */
 public class SugarDB implements DataInteractor {
+
+    LogUtil log = new LogUtil(SugarDB.class.getSimpleName());
 
     //CREATORS
 
@@ -23,6 +27,7 @@ public class SugarDB implements DataInteractor {
             public void call(Subscriber<? super Assignment> subscriber) {
                 Assignment assignment = new Assignment(title, Course.findById(Course.class, courseId));
                 assignment.save();
+                log.d("Done");
                 subscriber.onNext(assignment);
             }
         });
@@ -35,23 +40,43 @@ public class SugarDB implements DataInteractor {
             public void call(Subscriber<? super Course> subscriber) {
                 Course course = new Course(name, term, year);
                 course.save();
+                log.d("Done");
                 subscriber.onNext(course);
             }
         });
     }
 
-    //Relational methods
+    //GET ALL
 
     @Override
-    public Observable<List<Assignment>> getAssignmentsForCourse(long courseId) {
-        return Observable.just(Assignment.find(Assignment.class, "course = ?", Long.valueOf(courseId).toString()))
-                .subscribeOn(Schedulers.io());
+    public Observable<List<Assignment>> getAssignmentsForCourse(final long courseId) {
+        return Observable.create(new Observable.OnSubscribe<List<Assignment>>() {
+            @Override
+            public void call(Subscriber<? super List<Assignment>> subscriber) {
+                List<Assignment> assignments = Assignment.find(Assignment.class, "course = ?", Long.valueOf(courseId).toString());
+                log.d("Done");
+                subscriber.onNext(assignments);
+            }
+        });
     }
-
-    //GET ALL
 
     @Override
     public Observable<List<Course>> getCourses() {
         return Observable.just(Course.listAll(Course.class));
+    }
+
+    //DELETION
+
+
+    @Override
+    public Observable<Course> deleteCourse(final long id) {
+        return Observable.create(new Observable.OnSubscribe<Course>() {
+            @Override
+            public void call(Subscriber<? super Course> subscriber) {
+                Course course = Course.findById(Course.class, id);
+                course.delete();
+                subscriber.onNext(course);
+            }
+        });
     }
 }

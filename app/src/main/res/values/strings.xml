@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Courser</string>
+    <string name="new_course">New Course</string>
+    <string name="new_assignment">New Assignment</string>
+    <string name="assignments">Assignments</string>
+    <string name="courses">Courses</string>
 </resources>

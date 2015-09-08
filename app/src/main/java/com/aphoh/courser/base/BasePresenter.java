@@ -11,15 +11,15 @@ import nucleus.presenter.RxPresenter;
  * Created by Will on 9/5/15.
  */
 public class BasePresenter<ViewType> extends RxPresenter<ViewType> {
-    private DataInteractor interactor;
+    DataInteractor interactor = App.getAppComponent().interactor();
 
     @Override
     protected void onCreate(Bundle savedState) {
         super.onCreate(savedState);
-        interactor = App.getAppComponent().interactor();
+
     }
 
-    protected DataInteractor getDataInteractor(){
+    protected DataInteractor getDataInteractor() {
         return interactor;
     }
 }

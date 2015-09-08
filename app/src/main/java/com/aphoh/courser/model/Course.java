@@ -18,4 +18,25 @@ public class Course extends SugarRecord<Course> {
         this.term = term;
         this.year = year;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getTerm() {
+        return term;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    @Override
+    public String toString() {
+        return "Course{" +
+                "name='" + name + '\'' +
+                ", term='" + term + '\'' +
+                ", year=" + year +
+                '}';
+    }
 }

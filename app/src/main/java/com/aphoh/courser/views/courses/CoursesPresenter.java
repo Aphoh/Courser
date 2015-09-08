@@ -3,13 +3,10 @@ package com.aphoh.courser.views.courses;
 import android.os.Bundle;
 
 import com.aphoh.courser.base.BasePresenter;
-import com.aphoh.courser.base.Injector;
-import com.aphoh.courser.db.DataInteractor;
 import com.aphoh.courser.model.Course;
 
 import java.util.List;
 
-import nucleus.presenter.RxPresenter;
 import rx.Observable;
 import rx.functions.Action2;
 import rx.functions.Func0;
@@ -21,9 +18,16 @@ public class CoursesPresenter extends BasePresenter<CoursesView> {
 
     int ALL_COURSES = 0;
     int CREATE_COURSE = 1;
+    int DELETE_COURSE = 2;
 
     @Override
     protected void onCreate(Bundle savedState) {
+        super.onCreate(savedState);
+    }
+
+    @Override
+    protected void onTakeView(CoursesView coursesView) {
+        super.onTakeView(coursesView);
         restartableLatestCache(ALL_COURSES,
                 new Func0<Observable<List<Course>>>() {
                     @Override
@@ -45,13 +49,7 @@ public class CoursesPresenter extends BasePresenter<CoursesView> {
         start(ALL_COURSES);
     }
 
-    @Override
-    protected void onTakeView(CoursesView coursesView) {
-        super.onTakeView(coursesView);
-
-    }
-
-    public void requestCourseCreation(final String title, final String term, final int year){
+    public void requestCourseCreation(final String title, final String term, final int year) {
         restartableFirst(CREATE_COURSE,
                 new Func0<Observable<Course>>() {
                     @Override
@@ -72,6 +70,29 @@ public class CoursesPresenter extends BasePresenter<CoursesView> {
                     }
                 });
         start(CREATE_COURSE);
+    }
+
+    public void requestCourseDeletion(final long courseId) {
+        restartableFirst(DELETE_COURSE,
+                new Func0<Observable<Course>>() {
+                    @Override
+                    public Observable<Course> call() {
+                        return getDataInteractor().deleteCourse(courseId);
+                    }
+                },
+                new Action2<CoursesView, Course>() {
+                    @Override
+                    public void call(CoursesView coursesView, Course course) {
+                        start(ALL_COURSES);
+                    }
+                },
+                new Action2<CoursesView, Throwable>() {
+                    @Override
+                    public void call(CoursesView coursesView, Throwable throwable) {
+                        coursesView.onError(throwable);
+                    }
+                });
+        start(DELETE_COURSE);
     }
 
 

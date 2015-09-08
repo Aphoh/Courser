@@ -6,11 +6,11 @@ package com.aphoh.courser.base;
 public class Injector {
     private static AppComponent appComponent;
 
-    public static AppComponent get(){
+    public static AppComponent get() {
         return appComponent;
     }
 
-    public static void set(AppComponent component){
+    public static void set(AppComponent component) {
         appComponent = component;
     }
 }

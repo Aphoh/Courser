@@ -1,27 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.aphoh.courser" >
+<manifest package="com.aphoh.courser"
+          xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
+        android:name="com.aphoh.courser.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
-        android:name="com.aphoh.courser.App">
+        android:theme="@style/AppTheme">
         <activity
             android:name=".views.courses.CoursesActivity"
-            android:label="@string/app_name" >
+            android:label="@string/courses">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
-        <meta-data android:name="DATABASE" android:value="courser.db" />
-        <meta-data android:name="VERSION" android:value="1" />
-        <meta-data android:name="QUERY_LOG" android:value="true" />
-        <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="com.aphoh.courser.model" />
+        <activity
+            android:name=".views.assignments.AssignmentsActivity"
+            android:label="@string/assignments"
+            android:parentActivityName=".views.courses.CoursesActivity">
+
+        </activity>
+
+        <meta-data
+            android:name="DATABASE"
+            android:value="courser.db"/>
+        <meta-data
+            android:name="VERSION"
+            android:value="1"/>
+        <meta-data
+            android:name="QUERY_LOG"
+            android:value="true"/>
+        <meta-data
+            android:name="DOMAIN_PACKAGE_NAME"
+            android:value="com.aphoh.courser.model"/>
     </application>
 
 </manifest>
