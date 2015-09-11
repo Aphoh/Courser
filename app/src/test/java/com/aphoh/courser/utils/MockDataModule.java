@@ -3,7 +3,10 @@ package com.aphoh.courser.utils;
 import com.aphoh.courser.base.DataModule;
 import com.aphoh.courser.db.DataInteractor;
 
+import javax.inject.Singleton;
+
 import dagger.Module;
+import dagger.Provides;
 
 /**
  * Created by Will on 9/5/15.
@@ -11,7 +14,8 @@ import dagger.Module;
 @Module
 public class MockDataModule extends DataModule{
 
-    @Override
+    @Provides
+    @Singleton
     public DataInteractor provideDataInteractor() {
         return new MockDataInteractor();
     }
