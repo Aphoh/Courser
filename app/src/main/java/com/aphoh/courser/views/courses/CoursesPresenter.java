@@ -32,7 +32,8 @@ public class CoursesPresenter extends BasePresenter<CoursesView> {
                 new Func0<Observable<List<Course>>>() {
                     @Override
                     public Observable<List<Course>> call() {
-                        return getDataInteractor().getCourses();
+                        return getDataInteractor().getCourses()
+                                .observeOn(getScheduler());
                     }
                 },
                 new Action2<CoursesView, List<Course>>() {
@@ -54,7 +55,8 @@ public class CoursesPresenter extends BasePresenter<CoursesView> {
                 new Func0<Observable<Course>>() {
                     @Override
                     public Observable<Course> call() {
-                        return getDataInteractor().createCourse(title, term, year);
+                        return getDataInteractor().createCourse(title, term, year)
+                                .observeOn(getScheduler());
                     }
                 },
                 new Action2<CoursesView, Course>() {
@@ -77,7 +79,8 @@ public class CoursesPresenter extends BasePresenter<CoursesView> {
                 new Func0<Observable<Course>>() {
                     @Override
                     public Observable<Course> call() {
-                        return getDataInteractor().deleteCourse(courseId);
+                        return getDataInteractor().deleteCourse(courseId)
+                                .observeOn(getScheduler());
                     }
                 },
                 new Action2<CoursesView, Course>() {

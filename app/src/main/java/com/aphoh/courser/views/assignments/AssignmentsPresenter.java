@@ -7,13 +7,9 @@ import com.aphoh.courser.model.Assignment;
 
 import java.util.List;
 
-import nucleus.presenter.delivery.Delivery;
 import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action2;
 import rx.functions.Func0;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by Will on 9/5/15.
@@ -36,7 +32,8 @@ public class AssignmentsPresenter extends BasePresenter<AssignmentsView> {
                 new Func0<Observable<List<Assignment>>>() {
                     @Override
                     public Observable<List<Assignment>> call() {
-                        return getDataInteractor().getAssignmentsForCourse(courseId);
+                        return getDataInteractor().getAssignmentsForCourse(courseId)
+                                .observeOn(getScheduler());
                     }
                 },
                 new Action2<AssignmentsView, List<Assignment>>() {
@@ -60,7 +57,8 @@ public class AssignmentsPresenter extends BasePresenter<AssignmentsView> {
                 new Func0<Observable<Assignment>>() {
                     @Override
                     public Observable<Assignment> call() {
-                        return getDataInteractor().createAssignment(name, courseId);
+                        return getDataInteractor().createAssignment(name, courseId)
+                                .observeOn(getScheduler());
                     }
                 },
                 new Action2<AssignmentsView, Assignment>() {
