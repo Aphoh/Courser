@@ -6,12 +6,14 @@ import com.aphoh.courser.base.DataModule;
 import com.facebook.stetho.Stetho;
 import com.orm.SugarApp;
 
+import net.danlew.android.joda.JodaTimeAndroid;
+
 /**
  * Created by Will on 9/4/15.
  */
 public class App extends SugarApp {
 
-    private static AppComponent component;
+    protected static AppComponent component;
 
     @Override
     public void onCreate() {
@@ -19,16 +21,26 @@ public class App extends SugarApp {
         component = DaggerAppComponent.builder()
                 .dataModule(new DataModule())
                 .build();
-        if (BuildConfig.DEBUG) Stetho.initialize(
-                Stetho.newInitializerBuilder(this)
-                        .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
-                        .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
-                        .build()
-        );
+        JodaTimeAndroid.init(this);
+        if (BuildConfig.DEBUG && !isUnitTesting())
+            Stetho.initialize(
+                    Stetho.newInitializerBuilder(this)
+                            .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
+                            .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
+                            .build()
+            );
 
     }
 
     public static AppComponent getAppComponent() {
         return component;
+    }
+
+    public static void setAppComponent(AppComponent appComponent){
+        component = appComponent;
+    }
+
+    protected boolean isUnitTesting() {
+        return false;
     }
 }

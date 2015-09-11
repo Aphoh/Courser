@@ -4,7 +4,11 @@ import android.util.Log;
 
 import com.aphoh.courser.model.Assignment;
 import com.aphoh.courser.model.Course;
+import com.aphoh.courser.model.Student;
+import com.aphoh.courser.model.Submission;
 import com.aphoh.courser.util.LogUtil;
+
+import org.joda.time.DateTime;
 
 import java.util.List;
 
@@ -46,7 +50,52 @@ public class SugarDB implements DataInteractor {
         });
     }
 
+    @Override
+    public Observable<Submission> createSubmission(final long assignmentId, final long studentId) {
+        return Observable.create(new Observable.OnSubscribe<Submission>() {
+            @Override
+            public void call(Subscriber<? super Submission> subscriber) {
+                Submission submission = new Submission(
+                        getStudentSynchronous(studentId),
+                        getAssignmentSynchonous(assignmentId),
+                        DateUtils.toString(DateTime.now())
+                );
+                submission.save();
+                subscriber.onNext(submission);
+            }
+        });
+    }
+
+    @Override
+    public Observable<Student> createStudent(final String name, final int age) {
+        return Observable.create(new Observable.OnSubscribe<Student>() {
+            @Override
+            public void call(Subscriber<? super Student> subscriber) {
+                Student student = new Student(name, age);
+                student.save();
+                subscriber.onNext(student);
+            }
+        });
+    }
+
+
     //GET ALL
+
+    public Observable<Student> getStudent(long studentId){
+        return Observable.just(getStudentSynchronous(studentId));
+    }
+
+    private Student getStudentSynchronous(long studentId){
+        return Student.findById(Student.class, studentId);
+    }
+
+    public Observable<Assignment> getAssignment(long assignmentId){
+        return Observable.just(getAssignmentSynchonous(assignmentId));
+    }
+
+    private Assignment getAssignmentSynchonous(long assignmentId){
+        return Assignment.findById(Assignment.class, assignmentId);
+    }
 
     @Override
     public Observable<List<Assignment>> getAssignmentsForCourse(final long courseId) {
@@ -64,6 +113,23 @@ public class SugarDB implements DataInteractor {
     public Observable<List<Course>> getCourses() {
         return Observable.just(Course.listAll(Course.class));
     }
+
+    @Override
+    public Observable<List<Student>> getStudents() {
+        return Observable.just(Student.listAll(Student.class));
+    }
+
+    @Override
+    public Observable<Assignment> getAssignmentWithId(long id) {
+        return null;
+    }
+
+    @Override
+    public Observable<List<Submission>> getSubmissionsForStudent(long studentId) {
+        return null;
+    }
+
+
 
     //DELETION
 
