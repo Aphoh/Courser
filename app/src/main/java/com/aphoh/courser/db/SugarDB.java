@@ -1,15 +1,14 @@
 package com.aphoh.courser.db;
 
-import android.util.Log;
-
-import com.aphoh.courser.model.Assignment;
-import com.aphoh.courser.model.Course;
-import com.aphoh.courser.model.Student;
-import com.aphoh.courser.model.Submission;
+import com.aphoh.courser.model.SugarAssignment;
+import com.aphoh.courser.model.SugarCourse;
+import com.aphoh.courser.model.SugarStudent;
+import com.aphoh.courser.model.SugarSubmission;
 import com.aphoh.courser.util.LogUtil;
 
 import org.joda.time.DateTime;
 
+import java.util.Arrays;
 import java.util.List;
 
 import rx.Observable;
@@ -19,9 +18,6 @@ import rx.Subscriber;
  * Created by Will on 9/4/15.
  */
 public class SugarDB implements DataInteractor {
-
-    LogUtil log = new LogUtil(SugarDB.class.getSimpleName());
-
     //CREATORS
 
     @Override
@@ -29,9 +25,8 @@ public class SugarDB implements DataInteractor {
         return Observable.create(new Observable.OnSubscribe<Assignment>() {
             @Override
             public void call(Subscriber<? super Assignment> subscriber) {
-                Assignment assignment = new Assignment(title, Course.findById(Course.class, courseId));
+                SugarAssignment assignment = new SugarAssignment(title, SugarCourse.findById(SugarCourse.class, courseId));
                 assignment.save();
-                log.d("Done");
                 subscriber.onNext(assignment);
             }
         });
@@ -42,9 +37,8 @@ public class SugarDB implements DataInteractor {
         return Observable.create(new Observable.OnSubscribe<Course>() {
             @Override
             public void call(Subscriber<? super Course> subscriber) {
-                Course course = new Course(name, term, year);
+                SugarCourse course = new SugarCourse(name, term, year);
                 course.save();
-                log.d("Done");
                 subscriber.onNext(course);
             }
         });
@@ -55,9 +49,9 @@ public class SugarDB implements DataInteractor {
         return Observable.create(new Observable.OnSubscribe<Submission>() {
             @Override
             public void call(Subscriber<? super Submission> subscriber) {
-                Submission submission = new Submission(
-                        getStudentSynchronous(studentId),
-                        getAssignmentSynchonous(assignmentId),
+                SugarSubmission submission = new SugarSubmission(
+                        SugarStudent.findById(SugarStudent.class, studentId),
+                        SugarAssignment.findById(SugarAssignment.class, assignmentId),
                         DateUtils.toString(DateTime.now())
                 );
                 submission.save();
@@ -71,7 +65,7 @@ public class SugarDB implements DataInteractor {
         return Observable.create(new Observable.OnSubscribe<Student>() {
             @Override
             public void call(Subscriber<? super Student> subscriber) {
-                Student student = new Student(name, age);
+                SugarStudent student = new SugarStudent(name, age);
                 student.save();
                 subscriber.onNext(student);
             }
@@ -81,20 +75,12 @@ public class SugarDB implements DataInteractor {
 
     //GET ALL
 
-    public Observable<Student> getStudent(long studentId){
-        return Observable.just(getStudentSynchronous(studentId));
-    }
-
     private Student getStudentSynchronous(long studentId){
-        return Student.findById(Student.class, studentId);
-    }
-
-    public Observable<Assignment> getAssignment(long assignmentId){
-        return Observable.just(getAssignmentSynchonous(assignmentId));
+        return SugarStudent.findById(SugarStudent.class, studentId);
     }
 
     private Assignment getAssignmentSynchonous(long assignmentId){
-        return Assignment.findById(Assignment.class, assignmentId);
+        return SugarAssignment.findById(SugarAssignment.class, assignmentId);
     }
 
     @Override
@@ -102,32 +88,69 @@ public class SugarDB implements DataInteractor {
         return Observable.create(new Observable.OnSubscribe<List<Assignment>>() {
             @Override
             public void call(Subscriber<? super List<Assignment>> subscriber) {
-                List<Assignment> assignments = Assignment.find(Assignment.class, "course = ?", Long.valueOf(courseId).toString());
-                log.d("Done");
-                subscriber.onNext(assignments);
+                List<SugarAssignment> assignments = SugarAssignment.find(SugarAssignment.class, "course = ?", Long.valueOf(courseId).toString());
+                subscriber.onNext(Arrays.asList(
+                        assignments.toArray(new Assignment[assignments.size()])
+                ));
+            }
+        });
+    }
+
+
+    @Override
+    public Observable<Assignment> getAssignmentWithId(final long id) {
+        return Observable.just(getAssignmentSynchonous(id));
+    }
+
+    @Override
+    public Observable<Course> getCourseWithId(long id) {
+        return Observable.just((Course)SugarCourse.findById(SugarCourse.class, id));
+    }
+
+    @Override
+    public Observable<Student> getStudentWithId(long id) {
+        return Observable.just(getStudentSynchronous(id));
+    }
+
+    @Override
+    public Observable<List<Submission>> getSubmissionsForStudent(final long studentId) {
+        return Observable.create(new Observable.OnSubscribe<List<Submission>>() {
+            @Override
+            public void call(Subscriber<? super List<Submission>> subscriber) {
+                List<SugarSubmission> sugarSubmissions = SugarSubmission.find(SugarSubmission.class, "student = ?", Long.valueOf(studentId).toString());
+                subscriber.onNext(Arrays.asList(
+                        sugarSubmissions.toArray(new Submission[sugarSubmissions.size()])
+                ));
             }
         });
     }
 
     @Override
     public Observable<List<Course>> getCourses() {
-        return Observable.just(Course.listAll(Course.class));
+        return Observable.create(new Observable.OnSubscribe<List<Course>>() {
+            @Override
+            public void call(Subscriber<? super List<Course>> subscriber) {
+                List<SugarCourse> sugarCourses = SugarCourse.listAll(SugarCourse.class);
+                subscriber.onNext(Arrays.asList(
+                        sugarCourses.toArray(new Course[sugarCourses.size()])
+                ));
+            }
+        });
     }
 
     @Override
     public Observable<List<Student>> getStudents() {
-        return Observable.just(Student.listAll(Student.class));
+        return Observable.create(new Observable.OnSubscribe<List<Student>>() {
+            @Override
+            public void call(Subscriber<? super List<Student>> subscriber) {
+                List<SugarStudent> sugarStudents = SugarStudent.listAll(SugarStudent.class);
+                subscriber.onNext(Arrays.asList(
+                                sugarStudents.toArray(new Student[sugarStudents.size()]))
+                );
+            }
+        });
     }
 
-    @Override
-    public Observable<Assignment> getAssignmentWithId(long id) {
-        return null;
-    }
-
-    @Override
-    public Observable<List<Submission>> getSubmissionsForStudent(long studentId) {
-        return null;
-    }
 
 
 
@@ -139,7 +162,7 @@ public class SugarDB implements DataInteractor {
         return Observable.create(new Observable.OnSubscribe<Course>() {
             @Override
             public void call(Subscriber<? super Course> subscriber) {
-                Course course = Course.findById(Course.class, id);
+                SugarCourse course = SugarCourse.findById(SugarCourse.class, id);
                 course.delete();
                 subscriber.onNext(course);
             }

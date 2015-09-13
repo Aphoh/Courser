@@ -4,16 +4,14 @@ import com.aphoh.courser.App;
 import com.aphoh.courser.BuildConfig;
 import com.aphoh.courser.TestApp;
 import com.aphoh.courser.base.DaggerAppComponent;
-import com.aphoh.courser.base.DataModule;
 import com.aphoh.courser.db.DataInteractor;
-import com.aphoh.courser.db.DateUtils;
-import com.aphoh.courser.model.Assignment;
-import com.aphoh.courser.model.Course;
-import com.aphoh.courser.model.Student;
-import com.aphoh.courser.model.Submission;
 import com.aphoh.courser.utils.MockDataInteractor;
 import com.aphoh.courser.utils.MockDataModule;
 import com.aphoh.courser.utils.MockSchedulerModule;
+import com.aphoh.courser.utils.model.MockAssignment;
+import com.aphoh.courser.utils.model.MockCourse;
+import com.aphoh.courser.utils.model.MockStudent;
+import com.aphoh.courser.utils.model.MockSubmission;
 import com.aphoh.courser.views.assignmentview.AssignmentViewPresenter;
 import com.aphoh.courser.views.assignmentview.AssignmentViewView;
 
@@ -23,14 +21,8 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
-import java.util.Arrays;
 import java.util.List;
 
-import javax.inject.Singleton;
-
-import dagger.Provides;
-import rx.Observable;
-import rx.Scheduler;
 import rx.schedulers.TestScheduler;
 
 import static com.aphoh.courser.views.assignmentview.AssignmentViewView.*;
@@ -40,29 +32,37 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Created by Will on 9/10/15.
  */
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, application = TestApp.class)
+@Config(constants = BuildConfig.class, application = TestApp.class, sdk = 21)
 public class AssignmentViewPresenterTest {
-    final int ASSIGNMENT_ID = 0;
+    final int MOCK_ID = 1;
 
     TestScheduler testScheduler;
-    DataInteractor dataInteractor;
-    MockDataModule dataModule = new MockDataModule();
+    MockDataInteractor dataInteractor = new MockDataInteractor();
+    MockDataModule dataModule = new MockDataModule(dataInteractor);
 
     @Before
     public void setUp() throws Exception {
-        testScheduler = new TestScheduler();
+        dataInteractor.clear();
+    }
+
+    @Test
+    public void testSingleItem() throws Exception {
+        createTestScheduler();
         App.setAppComponent(
                 DaggerAppComponent.builder()
                         .dataModule(dataModule)
                         .schedulerModule(new MockSchedulerModule(testScheduler))
                         .build()
         );
-        dataInteractor = App.getAppComponent().interactor();
-    }
 
-    @Test
-    public void testSingleItem() throws Exception {
-        dataInteractor.createAssignment("mock", 0);
+        DataInteractor.Course course = new MockCourse(MOCK_ID, "mock", "mock", 0);
+        DataInteractor.Student student = new MockStudent(MOCK_ID, "mock", 0);
+        DataInteractor.Assignment assignment = new MockAssignment(MOCK_ID, "mock", course, "mock");
+        MockSubmission submission = new MockSubmission(MOCK_ID, student, assignment);
+        dataInteractor.createCourse(course);
+        dataInteractor.createAssignment(assignment);
+        dataInteractor.createStudent(student);
+        dataInteractor.createSubmission(submission);
 
         AssignmentViewPresenter presenter = new AssignmentViewPresenter();
         MockAssignmentViewView assignmentViewView = new MockAssignmentViewView();
@@ -72,7 +72,10 @@ public class AssignmentViewPresenterTest {
 
         List<ResponseModel> results = assignmentViewView.getModels();
         assertThat(results).hasSize(1);
+    }
 
+    private void createTestScheduler(){
+        testScheduler = new TestScheduler();
     }
 
     class MockAssignmentViewView implements AssignmentViewView{
@@ -85,11 +88,12 @@ public class AssignmentViewPresenterTest {
 
         @Override
         public long getAssignmentId() {
-            return ASSIGNMENT_ID;
+            return MOCK_ID;
         }
 
         public List<ResponseModel> getModels() {
             return models;
         }
     }
+
 }

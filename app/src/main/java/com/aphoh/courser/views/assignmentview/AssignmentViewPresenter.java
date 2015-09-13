@@ -3,10 +3,10 @@ package com.aphoh.courser.views.assignmentview;
 import android.os.Bundle;
 
 import com.aphoh.courser.base.BasePresenter;
+import com.aphoh.courser.db.DataInteractor.Assignment;
+import com.aphoh.courser.db.DataInteractor.Student;
+import com.aphoh.courser.db.DataInteractor.Submission;
 import com.aphoh.courser.db.DateUtils;
-import com.aphoh.courser.model.Assignment;
-import com.aphoh.courser.model.Student;
-import com.aphoh.courser.model.Submission;
 import com.aphoh.courser.views.assignmentview.AssignmentViewView.ResponseModel;
 
 import org.joda.time.DateTime;
@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action2;
 import rx.functions.Func0;
 import rx.functions.Func1;
@@ -47,7 +46,7 @@ public class AssignmentViewPresenter extends BasePresenter<AssignmentViewView> {
                                 new Func2<List<Student>, Assignment, List<ResponseModel>>() {
                                     @Override
                                     public List<ResponseModel> call(List<Student> students, Assignment assignment) {
-                                        List<ResponseModel> models = new ArrayList<ResponseModel>(students.size());
+                                        List<ResponseModel> models = new ArrayList<>(students.size());
                                         DateTime dateTime = DateUtils.getDate(assignment.getIsoDueDate());
                                         for (Student student : students) {
                                             ResponseModel model = new ResponseModel();
@@ -83,7 +82,7 @@ public class AssignmentViewPresenter extends BasePresenter<AssignmentViewView> {
                                                             });
                                                             submissionStatus =
                                                                     "Submitted " +
-                                                                    DateUtils.getTimeUntilDate(submissions.get(0).getIsoDate());
+                                                                            DateUtils.getTimeUntilDate(submissions.get(0).getIsoDate());
                                                         } else {
                                                             submissionStatus = "Not submitted";
                                                         }

@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.aphoh.courser.R;
-import com.aphoh.courser.model.Assignment;
+import com.aphoh.courser.db.DataInteractor.Assignment;
 import com.aphoh.courser.util.ItemClickListener;
 
 import java.util.ArrayList;

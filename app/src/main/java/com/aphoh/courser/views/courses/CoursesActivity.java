@@ -11,7 +11,7 @@ import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.aphoh.courser.R;
-import com.aphoh.courser.model.Course;
+import com.aphoh.courser.db.DataInteractor.Course;
 import com.aphoh.courser.util.DividerItemDecoration;
 import com.aphoh.courser.util.ItemClickListener;
 import com.aphoh.courser.util.LogUtil;
@@ -74,7 +74,6 @@ public class CoursesActivity extends NucleusActivity<CoursesPresenter> implement
 
     @Override
     public void publishItems(List<Course> courseList) {
-        log.d("publishItems: " + Arrays.toString(courseList.toArray()));
         adapter.setCourses(courseList);
     }
 

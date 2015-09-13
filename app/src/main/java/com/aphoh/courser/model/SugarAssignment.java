@@ -1,20 +1,23 @@
 package com.aphoh.courser.model;
 
+import com.aphoh.courser.db.DataInteractor;
 import com.aphoh.courser.db.DateUtils;
+import com.aphoh.courser.db.DataInteractor.Course;
 import com.orm.SugarRecord;
 
 /**
  * Created by Will on 9/4/15.
  */
-public class Assignment extends SugarRecord<Assignment> {
+public class SugarAssignment extends SugarRecord<SugarAssignment> implements DataInteractor.Assignment{
     String title;
     String isoDueDate;
-    Course course;
+    SugarCourse course;
 
-    public Assignment() {
+    public SugarAssignment() {
+
     }
 
-    public Assignment(String title, Course course) {
+    public SugarAssignment(String title, SugarCourse course) {
         this.title = title;
         this.course = course;
         isoDueDate = DateUtils.toString(DateUtils.getNow());
@@ -34,7 +37,7 @@ public class Assignment extends SugarRecord<Assignment> {
 
     @Override
     public String toString() {
-        return "Assignment{" +
+        return "SugarAssignment{" +
                 "title='" + title + '\'' +
                 ", course=" + course +
                 '}';

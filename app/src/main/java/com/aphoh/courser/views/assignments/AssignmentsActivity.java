@@ -13,7 +13,7 @@ import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.aphoh.courser.R;
-import com.aphoh.courser.model.Assignment;
+import com.aphoh.courser.db.DataInteractor.Assignment;
 import com.aphoh.courser.util.DividerItemDecoration;
 import com.aphoh.courser.util.ItemClickListener;
 import com.aphoh.courser.util.LogUtil;
@@ -45,7 +45,7 @@ public class AssignmentsActivity extends NucleusActivity<AssignmentsPresenter> i
         setContentView(R.layout.activity_courses);
         ButterKnife.bind(this);
         courseId = getIntent().getLongExtra(COURSE_ID, -1);
-        if(getActionBar() != null){
+        if (getActionBar() != null) {
             getActionBar().setDisplayHomeAsUpEnabled(true);
         }
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

@@ -1,7 +1,6 @@
 package com.aphoh.courser.views.assignmentview;
 
-import com.aphoh.courser.model.Student;
-import com.aphoh.courser.model.Submission;
+import com.aphoh.courser.db.DataInteractor.Student;
 
 import org.joda.time.DateTime;
 
@@ -16,7 +15,7 @@ public interface AssignmentViewView {
 
     long getAssignmentId();
 
-    class ResponseModel{
+    class ResponseModel {
         public static final String STATUS_SUBMITTED = "SUBMITTED";
         public static final String STATUS_NOT_SUBMITTED = "NOT_SUBMITTED";
 

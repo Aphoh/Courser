@@ -1,11 +1,5 @@
 package com.aphoh.courser.db;
 
-import com.aphoh.courser.model.Assignment;
-import com.aphoh.courser.model.Course;
-import com.aphoh.courser.model.Student;
-import com.aphoh.courser.model.Submission;
-import com.aphoh.courser.util.LogUtil;
-
 import java.util.List;
 
 import rx.Observable;
@@ -27,7 +21,11 @@ public interface DataInteractor {
     //GETTING
     Observable<List<Assignment>> getAssignmentsForCourse(long courseId);
 
+    Observable<Course> getCourseWithId(long id);
+
     Observable<Assignment> getAssignmentWithId(long id);
+
+    Observable<Student> getStudentWithId(long id);
 
     Observable<List<Submission>> getSubmissionsForStudent(long studentId);
 
@@ -37,4 +35,41 @@ public interface DataInteractor {
 
     //DELETION
     Observable<Course> deleteCourse(long id);
+
+
+
+
+    //CLASSES
+
+    interface BaseModel{
+        Long getId();
+    }
+
+    interface Assignment{
+        Long getId();
+        String getTitle();
+        String getIsoDueDate();
+        Course getCourse();
+
+    }
+
+    interface Course{
+        Long getId();
+        String getName();
+        String getTerm();
+        int getYear();
+    }
+
+    interface Student{
+        Long getId();
+        String getName();
+        int getAge();
+    }
+
+    interface Submission{
+        Long getId();
+        Student getStudent();
+        Assignment getAssignment();
+        String getIsoDate();
+    }
 }

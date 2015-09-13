@@ -3,7 +3,7 @@ package com.aphoh.courser.views.courses;
 import android.os.Bundle;
 
 import com.aphoh.courser.base.BasePresenter;
-import com.aphoh.courser.model.Course;
+import com.aphoh.courser.db.DataInteractor.Course;
 
 import java.util.List;
 
