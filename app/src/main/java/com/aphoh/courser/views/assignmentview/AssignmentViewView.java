@@ -17,11 +17,35 @@ public interface AssignmentViewView {
     long getAssignmentId();
 
     class ResponseModel{
-        static final String STATUS_SUBMITTED = "SUBMITTED";
-        static final String STATUS_NOT_SUBMITTED = "NOT_SUBMITTED";
+        public static final String STATUS_SUBMITTED = "SUBMITTED";
+        public static final String STATUS_NOT_SUBMITTED = "NOT_SUBMITTED";
 
         Student student;
         String submissionStatus;
         DateTime dueDate;
+
+        public Student getStudent() {
+            return student;
+        }
+
+        public String getSubmissionStatus() {
+            return submissionStatus;
+        }
+
+        public DateTime getDueDate() {
+            return dueDate;
+        }
+
+        public void setStudent(Student student) {
+            this.student = student;
+        }
+
+        public void setSubmissionStatus(String submissionStatus) {
+            this.submissionStatus = submissionStatus;
+        }
+
+        public void setDueDate(DateTime dueDate) {
+            this.dueDate = dueDate;
+        }
     }
 }
