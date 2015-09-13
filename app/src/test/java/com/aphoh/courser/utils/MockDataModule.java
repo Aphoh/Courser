@@ -14,10 +14,16 @@ import dagger.Provides;
 @Module
 public class MockDataModule extends DataModule{
 
+    DataInteractor interactor;
+
+    public MockDataModule(DataInteractor interactor) {
+        this.interactor = interactor;
+    }
+
     @Provides
     @Singleton
     public DataInteractor provideDataInteractor() {
-        return new MockDataInteractor();
+        return interactor;
     }
 
 }

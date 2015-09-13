@@ -99,8 +99,8 @@ public class MockDataInteractor implements DataInteractor {
             @Override
             public void call(Subscriber<? super List<Submission>> subscriber) {
                 List<Submission> subs = new ArrayList<>();
-                for(Submission submission : submissions){
-                    if(submission.getStudent().getId() == studentId)  subs.add(submission);
+                for (Submission submission : submissions) {
+                    if (submission.getStudent().getId() == studentId) subs.add(submission);
                 }
                 subscriber.onNext(subs);
             }
@@ -134,5 +134,28 @@ public class MockDataInteractor implements DataInteractor {
             if(record.getId() == id) return record;
         }
         return null;
+    }
+
+    public void clear(){
+        assignments = new ArrayList<>();
+        courses = new ArrayList<>();
+        students = new ArrayList<>();
+        submissions = new ArrayList<>();
+    }
+
+    public void createCourse(Course course) {
+        courses.add(course);
+    }
+
+    public void createStudent(Student student) {
+        students.add(student);
+    }
+
+    public void createAssignment(Assignment assignment) {
+        assignments.add(assignment);
+    }
+
+    public void createSubmission(Submission submission) {
+        submissions.add(submission);
     }
 }
