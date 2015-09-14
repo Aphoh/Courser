@@ -6,7 +6,7 @@ import com.orm.SugarRecord;
 /**
  * Created by Will on 9/4/15.
  */
-public class SugarCourse extends SugarRecord<SugarCourse> implements DataInteractor.Course{
+public class SugarCourse extends SugarRecord<SugarCourse> implements DataInteractor.Course {
     String name;
     String term;
     int year;

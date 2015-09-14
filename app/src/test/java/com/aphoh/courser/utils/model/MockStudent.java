@@ -32,7 +32,7 @@ public class MockStudent implements DataInteractor.Student {
         return age;
     }
 
-    public static MockStudent newInstance(String name, int age){
+    public static MockStudent newInstance(String name, int age) {
         MockStudent student = new MockStudent(idCounter, name, age);
         idCounter++;
         return student;

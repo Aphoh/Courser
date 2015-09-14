@@ -14,5 +14,6 @@ import rx.Scheduler;
 @Component(modules = {DataModule.class, SchedulerModule.class})
 public interface AppComponent {
     DataInteractor interactor();
+
     Scheduler scheduler();
 }

@@ -2,8 +2,6 @@ package com.aphoh.courser;
 
 import android.app.Application;
 
-import com.aphoh.courser.base.AppComponent;
-
 import net.danlew.android.joda.JodaTimeAndroid;
 
 /**

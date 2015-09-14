@@ -12,7 +12,7 @@ import dagger.Provides;
  * Created by Will on 9/5/15.
  */
 @Module
-public class MockDataModule extends DataModule{
+public class MockDataModule extends DataModule {
 
     DataInteractor interactor;
 

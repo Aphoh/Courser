@@ -1,8 +1,6 @@
 package com.aphoh.courser.views.assignments;
 
-import com.aphoh.courser.db.DataInteractor;
 import com.aphoh.courser.db.DataInteractor.Assignment;
-import com.aphoh.courser.model.SugarAssignment;
 
 import java.util.List;
 

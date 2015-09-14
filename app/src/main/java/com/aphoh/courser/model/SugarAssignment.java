@@ -1,14 +1,14 @@
 package com.aphoh.courser.model;
 
 import com.aphoh.courser.db.DataInteractor;
-import com.aphoh.courser.db.DateUtils;
 import com.aphoh.courser.db.DataInteractor.Course;
+import com.aphoh.courser.db.DateUtils;
 import com.orm.SugarRecord;
 
 /**
  * Created by Will on 9/4/15.
  */
-public class SugarAssignment extends SugarRecord<SugarAssignment> implements DataInteractor.Assignment{
+public class SugarAssignment extends SugarRecord<SugarAssignment> implements DataInteractor.Assignment {
     String title;
     String isoDueDate;
     SugarCourse course;

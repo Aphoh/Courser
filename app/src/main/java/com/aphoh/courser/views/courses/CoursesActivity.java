@@ -17,7 +17,6 @@ import com.aphoh.courser.util.ItemClickListener;
 import com.aphoh.courser.util.LogUtil;
 import com.aphoh.courser.views.assignments.AssignmentsActivity;
 
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.Bind;

@@ -42,7 +42,7 @@ public class MockSubmission implements DataInteractor.Submission {
         return date;
     }
 
-    public static MockSubmission newInstance(DataInteractor.Student student, DataInteractor.Assignment assignment){
+    public static MockSubmission newInstance(DataInteractor.Student student, DataInteractor.Assignment assignment) {
         MockSubmission submission = new MockSubmission(idCounter, student, assignment);
         idCounter++;
         return submission;

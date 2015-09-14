@@ -2,8 +2,6 @@ package com.aphoh.courser.views.assignmentview;
 
 import com.aphoh.courser.db.DataInteractor.Student;
 
-import org.joda.time.DateTime;
-
 import java.util.List;
 
 /**

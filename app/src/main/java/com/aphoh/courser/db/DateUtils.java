@@ -5,7 +5,6 @@ import org.joda.time.DateTimeComparator;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -25,7 +24,7 @@ public class DateUtils {
             return dateUtils;
     }
 
-    public static String toString(DateTime dateTime){
+    public static String toString(DateTime dateTime) {
         return getInstance().dtf.print(dateTime);
     }
 
@@ -33,7 +32,7 @@ public class DateUtils {
         return getInstance().dtf.parseDateTime(isoDate);
     }
 
-    public static DateTime getNow(){
+    public static DateTime getNow() {
         return DateTime.now();
     }
 
@@ -41,7 +40,7 @@ public class DateUtils {
         return getTimeUntilDate(getDate(futureDate));
     }
 
-    public static String getTimeUntilDate(DateTime futureDate){
+    public static String getTimeUntilDate(DateTime futureDate) {
         return String.valueOf(android.text.format.DateUtils.getRelativeTimeSpanString(futureDate.getMillis(),
                 DateTime.now().getMillis(),
                 android.text.format.DateUtils.FORMAT_ABBREV_RELATIVE));

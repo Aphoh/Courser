@@ -12,7 +12,7 @@ import rx.android.schedulers.AndroidSchedulers;
 public class SchedulerModule {
 
     @Provides
-    public Scheduler provideSubscriptionScheduler(){
+    public Scheduler provideSubscriptionScheduler() {
         return AndroidSchedulers.mainThread();
     }
 }

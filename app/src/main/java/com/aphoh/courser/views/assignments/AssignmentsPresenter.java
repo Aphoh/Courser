@@ -3,9 +3,7 @@ package com.aphoh.courser.views.assignments;
 import android.os.Bundle;
 
 import com.aphoh.courser.base.BasePresenter;
-import com.aphoh.courser.db.DataInteractor;
 import com.aphoh.courser.db.DataInteractor.Assignment;
-import com.aphoh.courser.model.SugarAssignment;
 
 import java.util.List;
 

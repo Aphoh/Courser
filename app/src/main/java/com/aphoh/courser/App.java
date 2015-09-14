@@ -38,7 +38,7 @@ public class App extends SugarApp {
         return component;
     }
 
-    public static void setAppComponent(AppComponent appComponent){
+    public static void setAppComponent(AppComponent appComponent) {
         component = appComponent;
     }
 

@@ -4,7 +4,6 @@ import com.aphoh.courser.App;
 import com.aphoh.courser.BuildConfig;
 import com.aphoh.courser.TestApp;
 import com.aphoh.courser.base.DaggerAppComponent;
-import com.aphoh.courser.db.DataInteractor;
 import com.aphoh.courser.db.DataInteractor.Course;
 import com.aphoh.courser.utils.MockDataInteractor;
 import com.aphoh.courser.utils.MockDataModule;
@@ -76,7 +75,7 @@ public class CoursesPresenterTest {
         assertThat(view.getItems()).containsOnly(course);
     }
 
-    private void init(){
+    private void init() {
         testScheduler = new TestScheduler();
         App.setAppComponent(DaggerAppComponent.builder()
                 .dataModule(dataModule)
@@ -84,7 +83,7 @@ public class CoursesPresenterTest {
                 .build());
     }
 
-    class MockCoursesView implements CoursesView{
+    class MockCoursesView implements CoursesView {
         List<Course> items;
         Throwable error;
 

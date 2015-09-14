@@ -8,7 +8,7 @@ import com.orm.SugarRecord;
 /**
  * Created by Will on 9/8/15.
  */
-public class SugarSubmission extends SugarRecord<SugarSubmission> implements DataInteractor.Submission{
+public class SugarSubmission extends SugarRecord<SugarSubmission> implements DataInteractor.Submission {
     Student student;
     SugarAssignment assignment;
     String isoDate;

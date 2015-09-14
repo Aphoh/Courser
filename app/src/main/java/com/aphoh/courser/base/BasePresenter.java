@@ -25,7 +25,7 @@ public class BasePresenter<ViewType> extends RxPresenter<ViewType> {
         return interactor;
     }
 
-    protected Scheduler getScheduler(){
+    protected Scheduler getScheduler() {
         return scheduler;
     }
 }

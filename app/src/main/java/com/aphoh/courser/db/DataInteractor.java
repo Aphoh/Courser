@@ -37,39 +37,48 @@ public interface DataInteractor {
     Observable<Course> deleteCourse(long id);
 
 
-
-
     //CLASSES
 
-    interface BaseModel{
+    interface BaseModel {
         Long getId();
     }
 
-    interface Assignment{
+    interface Assignment {
         Long getId();
+
         String getTitle();
+
         String getIsoDueDate();
+
         Course getCourse();
 
     }
 
-    interface Course{
+    interface Course {
         Long getId();
+
         String getName();
+
         String getTerm();
+
         int getYear();
     }
 
-    interface Student{
+    interface Student {
         Long getId();
+
         String getName();
+
         int getAge();
     }
 
-    interface Submission{
+    interface Submission {
         Long getId();
+
         Student getStudent();
+
         Assignment getAssignment();
+
         String getIsoDate();
     }
 }

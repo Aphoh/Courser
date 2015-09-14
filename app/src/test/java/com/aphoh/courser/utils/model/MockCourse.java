@@ -5,7 +5,7 @@ import com.aphoh.courser.db.DataInteractor;
 /**
  * Created by Will on 9/13/15.
  */
-public class MockCourse implements DataInteractor.Course{
+public class MockCourse implements DataInteractor.Course {
     private static int idCounter = 1;
     long id;
     String name;
@@ -40,7 +40,7 @@ public class MockCourse implements DataInteractor.Course{
         return year;
     }
 
-    public static MockCourse newInstance(String name, String term, int year){
+    public static MockCourse newInstance(String name, String term, int year) {
         MockCourse course = new MockCourse(idCounter, name, term, year);
         idCounter++;
         return course;

@@ -1,9 +1,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:tools="http://schemas.android.com/tools"
       tools:context=".CoursesActivity">
-    <item android:id="@+id/menu_assignments_add"
-          android:icon="@drawable/ic_action_add"
-          android:showAsAction="ifRoom"
-          android:title="@string/new_assignment"
-          tools:ignore="AppCompatResource"/>
+    <item
+        android:id="@+id/menu_assignments_add"
+        android:icon="@drawable/ic_action_add"
+        android:showAsAction="ifRoom"
+        android:title="@string/new_assignment"
+        tools:ignore="AppCompatResource"/>
 </menu>

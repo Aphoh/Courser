@@ -19,7 +19,6 @@ import rx.functions.Action2;
 import rx.functions.Func0;
 import rx.functions.Func1;
 import rx.functions.Func2;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by Will on 9/8/15.
@@ -53,7 +52,7 @@ public class AssignmentViewPresenter extends BasePresenter<AssignmentViewView> {
                                 .map(new Func1<List<ResponseModel>, List<ResponseModel>>() {
                                     @Override
                                     public List<ResponseModel> call(List<ResponseModel> responseModels) {
-                                        for(ResponseModel model : responseModels){
+                                        for (ResponseModel model : responseModels) {
                                             List<Submission> submissions = getDataInteractor().getSubmissionsForStudent(model.getStudent().getId())
                                                     .toBlocking()
                                                     .first();
@@ -93,7 +92,7 @@ public class AssignmentViewPresenter extends BasePresenter<AssignmentViewView> {
                 });
     }
 
-    public void request(long assignmentId){
+    public void request(long assignmentId) {
         this.assignmentId = assignmentId;
         start(FETCH);
     }

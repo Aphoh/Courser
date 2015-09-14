@@ -6,7 +6,7 @@ import com.orm.SugarRecord;
 /**
  * Created by Will on 9/4/15.
  */
-public class SugarStudent extends SugarRecord<SugarStudent> implements DataInteractor.Student{
+public class SugarStudent extends SugarRecord<SugarStudent> implements DataInteractor.Student {
     String name;
     int age;
 

@@ -44,7 +44,7 @@ public class CoursesPresenter extends BasePresenter<CoursesView> {
                 });
     }
 
-    public void requestCourses(){
+    public void requestCourses() {
         start(ALL_COURSES);
     }
 

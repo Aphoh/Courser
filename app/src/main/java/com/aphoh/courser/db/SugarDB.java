@@ -4,7 +4,6 @@ import com.aphoh.courser.model.SugarAssignment;
 import com.aphoh.courser.model.SugarCourse;
 import com.aphoh.courser.model.SugarStudent;
 import com.aphoh.courser.model.SugarSubmission;
-import com.aphoh.courser.util.LogUtil;
 
 import org.joda.time.DateTime;
 
@@ -75,11 +74,11 @@ public class SugarDB implements DataInteractor {
 
     //GET ALL
 
-    private Student getStudentSynchronous(long studentId){
+    private Student getStudentSynchronous(long studentId) {
         return SugarStudent.findById(SugarStudent.class, studentId);
     }
 
-    private Assignment getAssignmentSynchonous(long assignmentId){
+    private Assignment getAssignmentSynchonous(long assignmentId) {
         return SugarAssignment.findById(SugarAssignment.class, assignmentId);
     }
 
@@ -104,7 +103,7 @@ public class SugarDB implements DataInteractor {
 
     @Override
     public Observable<Course> getCourseWithId(long id) {
-        return Observable.just((Course)SugarCourse.findById(SugarCourse.class, id));
+        return Observable.just((Course) SugarCourse.findById(SugarCourse.class, id));
     }
 
     @Override
@@ -150,8 +149,6 @@ public class SugarDB implements DataInteractor {
             }
         });
     }
-
-
 
 
     //DELETION

@@ -5,7 +5,7 @@ import com.aphoh.courser.db.DataInteractor;
 /**
  * Created by Will on 9/13/15.
  */
-public class MockAssignment implements DataInteractor.Assignment{
+public class MockAssignment implements DataInteractor.Assignment {
     private static int idCounter = 1;
     long id;
     DataInteractor.Course course;
