@@ -23,11 +23,6 @@ public class CoursesPresenter extends BasePresenter<CoursesView> {
     @Override
     protected void onCreate(Bundle savedState) {
         super.onCreate(savedState);
-    }
-
-    @Override
-    protected void onTakeView(CoursesView coursesView) {
-        super.onTakeView(coursesView);
         restartableLatestCache(ALL_COURSES,
                 new Func0<Observable<List<Course>>>() {
                     @Override
@@ -47,6 +42,9 @@ public class CoursesPresenter extends BasePresenter<CoursesView> {
                         coursesView.onError(throwable);
                     }
                 });
+    }
+
+    public void requestCourses(){
         start(ALL_COURSES);
     }
 
