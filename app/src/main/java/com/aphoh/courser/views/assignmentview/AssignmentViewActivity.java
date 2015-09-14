@@ -13,12 +13,12 @@ public class AssignmentViewActivity extends NucleusActivity<AssignmentViewPresen
         implements AssignmentViewView {
 
     @Override
-    public long getAssignmentId() {
-        return 0;
+    public void publishItems(List<ResponseModel> responseModels) {
+
     }
 
     @Override
-    public void publishItems(List<ResponseModel> responseModels) {
+    public void publishError(Throwable error) {
 
     }
 }

@@ -13,7 +13,7 @@ public interface AssignmentViewView {
 
     void publishItems(List<ResponseModel> responseModels);
 
-    long getAssignmentId();
+    void publishError(Throwable error);
 
     class ResponseModel {
         public static final String STATUS_SUBMITTED = "SUBMITTED";
@@ -21,7 +21,6 @@ public interface AssignmentViewView {
 
         Student student;
         String submissionStatus;
-        DateTime dueDate;
 
         public Student getStudent() {
             return student;
@@ -31,20 +30,12 @@ public interface AssignmentViewView {
             return submissionStatus;
         }
 
-        public DateTime getDueDate() {
-            return dueDate;
-        }
-
         public void setStudent(Student student) {
             this.student = student;
         }
 
         public void setSubmissionStatus(String submissionStatus) {
             this.submissionStatus = submissionStatus;
-        }
-
-        public void setDueDate(DateTime dueDate) {
-            this.dueDate = dueDate;
         }
     }
 }

@@ -1,10 +1,13 @@
-package com.aphoh.courser.test;
+package com.aphoh.courser.views.assignmentview;
 
 import com.aphoh.courser.App;
 import com.aphoh.courser.BuildConfig;
 import com.aphoh.courser.TestApp;
 import com.aphoh.courser.base.DaggerAppComponent;
-import com.aphoh.courser.db.DataInteractor;
+import com.aphoh.courser.db.DataInteractor.Assignment;
+import com.aphoh.courser.db.DataInteractor.Course;
+import com.aphoh.courser.db.DataInteractor.Student;
+import com.aphoh.courser.db.DateUtils;
 import com.aphoh.courser.utils.MockDataInteractor;
 import com.aphoh.courser.utils.MockDataModule;
 import com.aphoh.courser.utils.MockSchedulerModule;
@@ -12,8 +15,6 @@ import com.aphoh.courser.utils.model.MockAssignment;
 import com.aphoh.courser.utils.model.MockCourse;
 import com.aphoh.courser.utils.model.MockStudent;
 import com.aphoh.courser.utils.model.MockSubmission;
-import com.aphoh.courser.views.assignmentview.AssignmentViewPresenter;
-import com.aphoh.courser.views.assignmentview.AssignmentViewView;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +26,7 @@ import java.util.List;
 
 import rx.schedulers.TestScheduler;
 
-import static com.aphoh.courser.views.assignmentview.AssignmentViewView.*;
+import static com.aphoh.courser.views.assignmentview.AssignmentViewView.ResponseModel;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -34,11 +35,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, application = TestApp.class, sdk = 21)
 public class AssignmentViewPresenterTest {
+
     final int MOCK_ID = 1;
 
     TestScheduler testScheduler;
     MockDataInteractor dataInteractor = new MockDataInteractor();
-    MockDataModule dataModule = new MockDataModule(dataInteractor);
 
     @Before
     public void setUp() throws Exception {
@@ -47,17 +48,17 @@ public class AssignmentViewPresenterTest {
 
     @Test
     public void testSingleItem() throws Exception {
-        createTestScheduler();
+        testScheduler = new TestScheduler();
         App.setAppComponent(
                 DaggerAppComponent.builder()
-                        .dataModule(dataModule)
+                        .dataModule(new MockDataModule(dataInteractor))
                         .schedulerModule(new MockSchedulerModule(testScheduler))
                         .build()
         );
 
-        DataInteractor.Course course = new MockCourse(MOCK_ID, "mock", "mock", 0);
-        DataInteractor.Student student = new MockStudent(MOCK_ID, "mock", 0);
-        DataInteractor.Assignment assignment = new MockAssignment(MOCK_ID, "mock", course, "mock");
+        Course course = new MockCourse(MOCK_ID, "mock", "mock", 0);
+        Student student = new MockStudent(MOCK_ID, "mock", 0);
+        Assignment assignment = new MockAssignment(MOCK_ID, "mock", course, "mock");
         MockSubmission submission = new MockSubmission(MOCK_ID, student, assignment);
         dataInteractor.createCourse(course);
         dataInteractor.createAssignment(assignment);
@@ -65,21 +66,27 @@ public class AssignmentViewPresenterTest {
         dataInteractor.createSubmission(submission);
 
         AssignmentViewPresenter presenter = new AssignmentViewPresenter();
+        presenter.onCreate(null);
+        presenter.request(assignment.getId());
+
         MockAssignmentViewView assignmentViewView = new MockAssignmentViewView();
         presenter.takeView(assignmentViewView);
 
         testScheduler.triggerActions();
 
+        assertThat(assignmentViewView.error).isNull();
+
         List<ResponseModel> results = assignmentViewView.getModels();
         assertThat(results).hasSize(1);
+
+        ResponseModel model = results.get(0);
+        assertThat(model.getStudent()).isEqualTo(student);
+        assertThat(model.getSubmissionStatus()).isEqualTo(DateUtils.getTimeUntilDate(submission.getIsoDate()));
     }
 
-    private void createTestScheduler(){
-        testScheduler = new TestScheduler();
-    }
-
-    class MockAssignmentViewView implements AssignmentViewView{
+    class MockAssignmentViewView implements AssignmentViewView {
         List<ResponseModel> models;
+        Throwable error;
 
         @Override
         public void publishItems(List<ResponseModel> responseModels) {
@@ -87,8 +94,8 @@ public class AssignmentViewPresenterTest {
         }
 
         @Override
-        public long getAssignmentId() {
-            return MOCK_ID;
+        public void publishError(Throwable error) {
+            this.error = error;
         }
 
         public List<ResponseModel> getModels() {

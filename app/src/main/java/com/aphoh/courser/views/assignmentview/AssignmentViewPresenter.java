@@ -27,16 +27,11 @@ import rx.schedulers.Schedulers;
 public class AssignmentViewPresenter extends BasePresenter<AssignmentViewView> {
 
     int FETCH = 0;
+    private long assignmentId;
 
     @Override
     protected void onCreate(Bundle savedState) {
         super.onCreate(savedState);
-    }
-
-    @Override
-    protected void onTakeView(AssignmentViewView assignmentViewView) {
-        super.onTakeView(assignmentViewView);
-        final long assignmentId = assignmentViewView.getAssignmentId();
         restartableLatestCache(FETCH,
                 new Func0<Observable<List<ResponseModel>>>() {
                     @Override
@@ -47,55 +42,41 @@ public class AssignmentViewPresenter extends BasePresenter<AssignmentViewView> {
                                     @Override
                                     public List<ResponseModel> call(List<Student> students, Assignment assignment) {
                                         List<ResponseModel> models = new ArrayList<>(students.size());
-                                        DateTime dateTime = DateUtils.getDate(assignment.getIsoDueDate());
                                         for (Student student : students) {
                                             ResponseModel model = new ResponseModel();
                                             model.student = student;
-                                            model.dueDate = dateTime;
                                             models.add(model);
                                         }
                                         return models;
                                     }
                                 })
-                                .flatMap(new Func1<List<ResponseModel>, Observable<ResponseModel>>() {
+                                .map(new Func1<List<ResponseModel>, List<ResponseModel>>() {
                                     @Override
-                                    public Observable<ResponseModel> call(List<ResponseModel> responseModels) {
-                                        return Observable.from(responseModels);
-                                    }
-                                })
-                                .flatMap(new Func1<ResponseModel, Observable<ResponseModel>>() {
-                                    @Override
-                                    public Observable<ResponseModel> call(ResponseModel responseModel) {
-                                        return Observable.combineLatest(
-                                                Observable.just(responseModel),
-                                                getDataInteractor().getSubmissionsForStudent(responseModel.student.getId()),
-                                                new Func2<ResponseModel, List<Submission>, ResponseModel>() {
+                                    public List<ResponseModel> call(List<ResponseModel> responseModels) {
+                                        for(ResponseModel model : responseModels){
+                                            List<Submission> submissions = getDataInteractor().getSubmissionsForStudent(model.getStudent().getId())
+                                                    .toBlocking()
+                                                    .first();
+                                            String submissionStatus;
+                                            if (submissions.size() > 0) {
+                                                DateUtils.sortYoungestFirst(submissions, new DateUtils.DateTimeGetter<Submission>() {
                                                     @Override
-                                                    public ResponseModel call(ResponseModel responseModel, List<Submission> submissions) {
-                                                        String submissionStatus;
-                                                        if (submissions.size() > 0) {
-                                                            DateUtils.sortYoungestFirst(submissions, new DateUtils.DateTimeGetter<Submission>() {
-                                                                @Override
-                                                                public DateTime getDateTime(Submission item) {
-                                                                    return DateUtils.getDate(item.getIsoDate());
-                                                                }
-                                                            });
-                                                            submissionStatus =
-                                                                    "Submitted " +
-                                                                            DateUtils.getTimeUntilDate(submissions.get(0).getIsoDate());
-                                                        } else {
-                                                            submissionStatus = "Not submitted";
-                                                        }
-                                                        responseModel.submissionStatus = submissionStatus;
-                                                        return responseModel;
+                                                    public DateTime getDateTime(Submission item) {
+                                                        return DateUtils.getDate(item.getIsoDate());
                                                     }
                                                 });
+                                                submissionStatus =
+                                                        "Submitted " +
+                                                                DateUtils.getTimeUntilDate(submissions.get(0).getIsoDate());
+                                            } else {
+                                                submissionStatus = "Not submitted";
+                                            }
+                                            model.submissionStatus = submissionStatus;
+                                        }
+                                        return responseModels;
                                     }
                                 })
-                                .toList()
-                                .observeOn(getScheduler())
-                                .subscribeOn(Schedulers.io());
-
+                                .observeOn(getScheduler());
                     }
                 },
                 new Action2<AssignmentViewView, List<ResponseModel>>() {
@@ -103,6 +84,17 @@ public class AssignmentViewPresenter extends BasePresenter<AssignmentViewView> {
                     public void call(AssignmentViewView assignmentViewView, List<ResponseModel> responseModels) {
                         assignmentViewView.publishItems(responseModels);
                     }
+                },
+                new Action2<AssignmentViewView, Throwable>() {
+                    @Override
+                    public void call(AssignmentViewView assignmentViewView, Throwable throwable) {
+                        assignmentViewView.publishError(throwable);
+                    }
                 });
+    }
+
+    public void request(long assignmentId){
+        this.assignmentId = assignmentId;
+        start(FETCH);
     }
 }
