@@ -44,6 +44,7 @@ public class AssignmentViewPresenter extends BasePresenter<AssignmentViewView> {
                                         for (Student student : students) {
                                             ResponseModel model = new ResponseModel();
                                             model.student = student;
+                                            model.dueDate = DateUtils.getDate(assignment.getIsoDueDate());
                                             models.add(model);
                                         }
                                         return models;
@@ -56,7 +57,6 @@ public class AssignmentViewPresenter extends BasePresenter<AssignmentViewView> {
                                             List<Submission> submissions = getDataInteractor().getSubmissionsForStudent(model.getStudent().getId())
                                                     .toBlocking()
                                                     .first();
-                                            String submissionStatus;
                                             if (submissions.size() > 0) {
                                                 DateUtils.sortYoungestFirst(submissions, new DateUtils.DateTimeGetter<Submission>() {
                                                     @Override
@@ -64,13 +64,13 @@ public class AssignmentViewPresenter extends BasePresenter<AssignmentViewView> {
                                                         return DateUtils.getDate(item.getIsoDate());
                                                     }
                                                 });
-                                                submissionStatus =
+                                                DateTime time = DateUtils.getDate(submissions.get(0).getIsoDate());
+                                                model.submissionStatus =
                                                         "Submitted " +
-                                                                DateUtils.getTimeUntilDate(submissions.get(0).getIsoDate());
+                                                                DateUtils.getTimeUntilDate(time);
                                             } else {
-                                                submissionStatus = "Not submitted";
+                                                model.submissionStatus = "Not submitted";
                                             }
-                                            model.submissionStatus = submissionStatus;
                                         }
                                         return responseModels;
                                     }

@@ -23,7 +23,6 @@
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_gravity="end"
-        android:layout_marginEnd="@dimen/item_padding"
-        android:text="TEST"/>
+        android:layout_marginEnd="@dimen/item_padding"/>
 
 </RelativeLayout>

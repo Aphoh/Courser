@@ -2,6 +2,8 @@ package com.aphoh.courser.views.assignmentview;
 
 import com.aphoh.courser.db.DataInteractor.Student;
 
+import org.joda.time.DateTime;
+
 import java.util.List;
 
 /**
@@ -14,11 +16,9 @@ public interface AssignmentViewView {
     void publishError(Throwable error);
 
     class ResponseModel {
-        public static final String STATUS_SUBMITTED = "SUBMITTED";
-        public static final String STATUS_NOT_SUBMITTED = "NOT_SUBMITTED";
-
         Student student;
         String submissionStatus;
+        DateTime dueDate;
 
         public Student getStudent() {
             return student;
@@ -26,6 +26,10 @@ public interface AssignmentViewView {
 
         public String getSubmissionStatus() {
             return submissionStatus;
+        }
+
+        public DateTime getDueDate() {
+            return dueDate;
         }
 
         public void setStudent(Student student) {
