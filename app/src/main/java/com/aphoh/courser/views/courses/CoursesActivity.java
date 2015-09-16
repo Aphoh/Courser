@@ -69,6 +69,8 @@ public class CoursesActivity extends NucleusActivity<CoursesPresenter> implement
                         .show();
             }
         });
+
+        getPresenter().requestCourses();
     }
 
     @Override
