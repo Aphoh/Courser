@@ -17,6 +17,7 @@ import com.aphoh.courser.db.DataInteractor.Assignment;
 import com.aphoh.courser.util.DividerItemDecoration;
 import com.aphoh.courser.util.ItemClickListener;
 import com.aphoh.courser.util.LogUtil;
+import com.aphoh.courser.views.assignmentview.AssignmentViewActivity;
 
 import java.util.Arrays;
 import java.util.List;
@@ -54,7 +55,8 @@ public class AssignmentsActivity extends NucleusActivity<AssignmentsPresenter> i
         adapter.setClickListener(new ItemClickListener<Assignment>() {
             @Override
             public void onItemClick(Assignment obj, View view, int position) {
-
+                Intent intent = AssignmentViewActivity.IntentFactor.withCourse(AssignmentsActivity.this, obj.getId());
+                startActivity(intent);
             }
         });
         adapter.setLongClickListener(new ItemClickListener<Assignment>() {
