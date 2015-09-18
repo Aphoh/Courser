@@ -11,10 +11,12 @@ import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.aphoh.courser.R;
+import com.aphoh.courser.db.DataInteractor;
 import com.aphoh.courser.db.DataInteractor.Course;
 import com.aphoh.courser.util.DividerItemDecoration;
 import com.aphoh.courser.util.ItemClickListener;
 import com.aphoh.courser.util.LogUtil;
+import com.aphoh.courser.view.MultiInputMaterialDialogBuilder;
 import com.aphoh.courser.views.assignments.AssignmentsActivity;
 
 import java.util.List;
@@ -71,11 +73,17 @@ public class CoursesActivity extends NucleusActivity<CoursesPresenter> implement
         });
 
         getPresenter().requestCourses();
+        getPresenter().requestStudents();
     }
 
     @Override
-    public void publishItems(List<Course> courseList) {
+    public void publishCourses(List<Course> courseList) {
         adapter.setCourses(courseList);
+    }
+
+    @Override
+    public void publishStudents(List<DataInteractor.Student> students) {
+
     }
 
     @Override
@@ -99,6 +107,35 @@ public class CoursesActivity extends NucleusActivity<CoursesPresenter> implement
                             }
                         })
                         .show();
+                break;
+            case R.id.menu_courses_new_student:
+                new MultiInputMaterialDialogBuilder(this)
+                        .addInput(null, "input", new MultiInputMaterialDialogBuilder.InputValidator() {
+                            @Override
+                            public CharSequence validate(CharSequence input) {
+                                if(input.length() < 0){
+                                    return "Name cannot be empty";
+                                }
+                                return null;
+                            }
+                        })
+                        .addInput(null, "Age", new MultiInputMaterialDialogBuilder.InputValidator() {
+                            @Override
+                            public CharSequence validate(CharSequence input) {
+                                if (input.toString().matches("[0-9]+") && input.length() > 2) {
+                                    return null;
+                                } else {
+                                    return "Age must be a number";
+                                }
+                            }
+                        })
+                        .inputs(new MultiInputMaterialDialogBuilder.InputsCallback() {
+                            @Override
+                            public void onInputs(MaterialDialog dialog, List<CharSequence> inputs, boolean allInputsValidated) {
+                                getPresenter().requestStudentCreation("lol", 0);
+                            }
+                        })
+                        .title(R.string.add_student);
                 break;
         }
         return super.onOptionsItemSelected(item);

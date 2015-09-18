@@ -7,4 +7,12 @@
         android:showAsAction="ifRoom"
         android:title="@string/new_course"
         tools:ignore="AppCompatResource"/>
+
+    <item
+        android:id="@+id/menu_courses_new_student"
+        android:icon="@drawable/ic_action_add_person"
+        android:showAsAction="ifRoom"
+        android:title="@string/add_student"
+        tools:ignore="AppCompatResource"/>
+
 </menu>
