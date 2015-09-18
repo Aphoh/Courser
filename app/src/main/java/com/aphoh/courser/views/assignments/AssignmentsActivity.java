@@ -45,10 +45,17 @@ public class AssignmentsActivity extends NucleusActivity<AssignmentsPresenter> i
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_courses);
         ButterKnife.bind(this);
-        courseId = getIntent().getLongExtra(COURSE_ID, -1);
+
         if (getActionBar() != null) {
             getActionBar().setDisplayHomeAsUpEnabled(true);
         }
+
+        if(savedInstanceState != null && savedInstanceState.containsKey(COURSE_ID)){
+            courseId = savedInstanceState.getLong(COURSE_ID, -1);
+        } else if(getIntent() != null && getIntent().hasExtra(COURSE_ID)){
+            courseId = getIntent().getLongExtra(COURSE_ID, -1);
+        }
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this));
         recyclerView.setAdapter(adapter = new AssignmentsAdapter(this));
@@ -91,6 +98,12 @@ public class AssignmentsActivity extends NucleusActivity<AssignmentsPresenter> i
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putLong(COURSE_ID, courseId);
     }
 
     @Override

@@ -2,8 +2,10 @@ package com.aphoh.courser.views.assignmentview;
 
 import com.aphoh.courser.App;
 import com.aphoh.courser.BuildConfig;
+import com.aphoh.courser.R;
 import com.aphoh.courser.TestApp;
 import com.aphoh.courser.base.DaggerAppComponent;
+import com.aphoh.courser.base.Injector;
 import com.aphoh.courser.db.DataInteractor.Assignment;
 import com.aphoh.courser.db.DataInteractor.Course;
 import com.aphoh.courser.db.DataInteractor.Student;
@@ -16,10 +18,12 @@ import com.aphoh.courser.utils.model.MockCourse;
 import com.aphoh.courser.utils.model.MockStudent;
 import com.aphoh.courser.utils.model.MockSubmission;
 
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 import java.util.List;
@@ -49,7 +53,7 @@ public class AssignmentViewPresenterTest {
     @Test
     public void testSingleItem() throws Exception {
         testScheduler = new TestScheduler();
-        App.setAppComponent(
+        Injector.set(
                 DaggerAppComponent.builder()
                         .dataModule(new MockDataModule(dataInteractor))
                         .schedulerModule(new MockSchedulerModule(testScheduler))
@@ -58,7 +62,7 @@ public class AssignmentViewPresenterTest {
 
         Course course = new MockCourse(MOCK_ID, "mock", "mock", 0);
         Student student = new MockStudent(MOCK_ID, "mock", 0);
-        Assignment assignment = new MockAssignment(MOCK_ID, "mock", course, "mock");
+        Assignment assignment = new MockAssignment(MOCK_ID, "mock", course, DateUtils.toString(DateTime.now()));
         MockSubmission submission = new MockSubmission(MOCK_ID, student, assignment);
         dataInteractor.createCourse(course);
         dataInteractor.createAssignment(assignment);

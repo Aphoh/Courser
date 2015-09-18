@@ -40,6 +40,9 @@ public class AssignmentViewActivity extends NucleusActivity<AssignmentViewPresen
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this));
 
+        if(getActionBar() != null)
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+
         adapter = new AssignmentViewAdapter(this, new ItemClickListener<ResponseModel>() {
             @Override
             public void onItemClick(ResponseModel obj, View view, int position) {
@@ -48,12 +51,12 @@ public class AssignmentViewActivity extends NucleusActivity<AssignmentViewPresen
         });
         recyclerView.setAdapter(adapter);
 
-        if(getIntent().getExtras() != null) {
+        if(savedInstanceState.containsKey(ASSIGNMENT_ID)){
+            assignmentId = savedInstanceState.getLong(ASSIGNMENT_ID);
+        } else if(getIntent().getExtras() != null && getIntent().hasExtra(ASSIGNMENT_ID)) {
             assignmentId = getIntent().getLongExtra(ASSIGNMENT_ID, -1);
-            getPresenter().request(assignmentId);
-        } else {
-
         }
+        getPresenter().request(assignmentId);
     }
 
     @Override
@@ -64,6 +67,12 @@ public class AssignmentViewActivity extends NucleusActivity<AssignmentViewPresen
     @Override
     public void publishError(Throwable error) {
 
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putLong(ASSIGNMENT_ID, assignmentId);
     }
 
     public static class IntentFactor{

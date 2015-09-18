@@ -66,7 +66,6 @@ public class AssignmentViewPresenter extends BasePresenter<AssignmentViewView> {
                                                 });
                                                 DateTime time = DateUtils.getDate(submissions.get(0).getIsoDate());
                                                 model.submissionStatus =
-                                                        "Submitted " +
                                                                 DateUtils.getTimeUntilDate(time);
                                             } else {
                                                 model.submissionStatus = "Not submitted";

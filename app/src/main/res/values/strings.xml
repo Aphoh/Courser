@@ -5,4 +5,5 @@
     <string name="assignments">Assignments</string>
     <string name="courses">Courses</string>
     <string name="view_assignment">View Assignment</string>
+    <string name="add_student">Add Student</string>
 </resources>
