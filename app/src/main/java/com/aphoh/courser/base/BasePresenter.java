@@ -12,8 +12,8 @@ import rx.Scheduler;
  * Created by Will on 9/5/15.
  */
 public class BasePresenter<ViewType> extends RxPresenter<ViewType> {
-    DataInteractor interactor = App.getAppComponent().interactor();
-    Scheduler scheduler = App.getAppComponent().scheduler();
+    DataInteractor interactor = Injector.get().interactor();
+    Scheduler scheduler = Injector.get().scheduler();
 
     @Override
     protected void onCreate(Bundle savedState) {
