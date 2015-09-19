@@ -2,6 +2,7 @@ package com.aphoh.courser.view;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -30,6 +31,20 @@ public class MultiInputMaterialDialogBuilder extends MaterialDialog.Builder {
         this.autoDismiss(false);
     }
 
+    public MultiInputMaterialDialogBuilder addInput(int inputType, CharSequence preFill, CharSequence hint, @NonNull InputValidator validator) {
+        EditText newEditText = new EditText(mContext);
+        newEditText.setText(preFill);
+        newEditText.setHint(hint);
+        newEditText.setInputType(inputType);
+
+
+        mEditTexts.add(newEditText);
+        mValidators.add(validator);
+        mRootView.addView(newEditText);
+
+        this.customView(mRootView, true);
+        return this;
+    }
     public MultiInputMaterialDialogBuilder addInput(CharSequence preFill, CharSequence hint, @NonNull InputValidator validator) {
         EditText newEditText = new EditText(mContext);
         newEditText.setText(preFill);

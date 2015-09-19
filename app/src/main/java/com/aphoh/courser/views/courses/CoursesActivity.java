@@ -110,19 +110,19 @@ public class CoursesActivity extends NucleusActivity<CoursesPresenter> implement
                 break;
             case R.id.menu_courses_new_student:
                 new MultiInputMaterialDialogBuilder(this)
-                        .addInput(null, "input", new MultiInputMaterialDialogBuilder.InputValidator() {
+                        .addInput(InputType.TYPE_TEXT_VARIATION_PERSON_NAME, null, "Name", new MultiInputMaterialDialogBuilder.InputValidator() {
                             @Override
                             public CharSequence validate(CharSequence input) {
-                                if(input.length() < 0){
+                                if (input.length() < 0) {
                                     return "Name cannot be empty";
                                 }
                                 return null;
                             }
                         })
-                        .addInput(null, "Age", new MultiInputMaterialDialogBuilder.InputValidator() {
+                        .addInput(InputType.TYPE_CLASS_NUMBER, null, "Age", new MultiInputMaterialDialogBuilder.InputValidator() {
                             @Override
                             public CharSequence validate(CharSequence input) {
-                                if (input.toString().matches("[0-9]+") && input.length() > 2) {
+                                if (input.toString().matches("[0-9]+") && input.length() > 0) {
                                     return null;
                                 } else {
                                     return "Age must be a number";
@@ -132,10 +132,15 @@ public class CoursesActivity extends NucleusActivity<CoursesPresenter> implement
                         .inputs(new MultiInputMaterialDialogBuilder.InputsCallback() {
                             @Override
                             public void onInputs(MaterialDialog dialog, List<CharSequence> inputs, boolean allInputsValidated) {
-                                getPresenter().requestStudentCreation("lol", 0);
+                                String name = inputs.get(0).toString();
+                                int age = Integer.valueOf(inputs.get(1).toString());
+                                getPresenter().requestStudentCreation(name, age);
                             }
                         })
-                        .title(R.string.add_student);
+                        .title(R.string.add_student)
+                        .positiveText("Confirm")
+                        .negativeText("Cancel")
+                        .show();
                 break;
         }
         return super.onOptionsItemSelected(item);
