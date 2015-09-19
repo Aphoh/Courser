@@ -9,8 +9,6 @@ import java.util.List;
  */
 public interface AssignmentsView {
 
-    long getCourseId();
-
     void publishItems(List<Assignment> assignments);
 
     void onError(Throwable throwable);

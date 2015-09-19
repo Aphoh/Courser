@@ -72,6 +72,8 @@ public class AssignmentsActivity extends NucleusActivity<AssignmentsPresenter> i
 
             }
         });
+
+        getPresenter().requestAssignments(courseId);
     }
 
     @Override
@@ -90,7 +92,7 @@ public class AssignmentsActivity extends NucleusActivity<AssignmentsPresenter> i
                         .input("Name", null, false, new MaterialDialog.InputCallback() {
                             @Override
                             public void onInput(MaterialDialog materialDialog, CharSequence charSequence) {
-                                getPresenter().requestCreateAssignment(AssignmentsActivity.this, charSequence.toString());
+                                getPresenter().requestCreateAssignment(charSequence.toString());
                                 log.toast(AssignmentsActivity.this, "Creating course...");
                             }
                         })
@@ -116,11 +118,6 @@ public class AssignmentsActivity extends NucleusActivity<AssignmentsPresenter> i
     public void onError(Throwable throwable) {
         log.e(Log.getStackTraceString(throwable));
         log.toast(this, "An error has occurred");
-    }
-
-    @Override
-    public long getCourseId() {
-        return courseId;
     }
 
     public static class IntentFactory {

@@ -18,16 +18,11 @@ public class AssignmentsPresenter extends BasePresenter<AssignmentsView> {
 
     int ASSIGNMENTS_FETCH = 0;
     int ASSIGNMENT_CREATE = 1;
+    long courseId;
 
     @Override
     protected void onCreate(Bundle savedState) {
         super.onCreate(savedState);
-    }
-
-    @Override
-    protected void onTakeView(AssignmentsView assignmentsView) {
-        super.onTakeView(assignmentsView);
-        final long courseId = assignmentsView.getCourseId();
         restartableLatestCache(ASSIGNMENTS_FETCH,
                 new Func0<Observable<List<Assignment>>>() {
                     @Override
@@ -48,11 +43,14 @@ public class AssignmentsPresenter extends BasePresenter<AssignmentsView> {
                         assignmentsView.onError(throwable);
                     }
                 });
+    }
+
+    public void requestAssignments(final long courseId){
+        this.courseId = courseId;
         start(ASSIGNMENTS_FETCH);
     }
 
-    public void requestCreateAssignment(AssignmentsView view, final String name) {
-        final long courseId = view.getCourseId();
+    public void requestCreateAssignment(final String name) {
         restartableFirst(ASSIGNMENT_CREATE,
                 new Func0<Observable<Assignment>>() {
                     @Override
