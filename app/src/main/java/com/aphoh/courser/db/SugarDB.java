@@ -165,4 +165,18 @@ public class SugarDB implements DataInteractor {
             }
         });
     }
+
+    @Override
+    public Observable<Void> deleteAll() {
+        return Observable.create(new Observable.OnSubscribe<Void>() {
+            @Override
+            public void call(Subscriber<? super Void> subscriber) {
+                SugarCourse.deleteAll(SugarCourse.class);
+                SugarAssignment.deleteAll(SugarAssignment.class);
+                SugarStudent.deleteAll(SugarStudent.class);
+                SugarSubmission.deleteAll(SugarSubmission.class);
+                subscriber.onNext(null);
+            }
+        });
+    }
 }

@@ -36,6 +36,7 @@ public interface DataInteractor {
     //DELETION
     Observable<Course> deleteCourse(long id);
 
+    Observable<Void> deleteAll();
 
     //CLASSES
 
