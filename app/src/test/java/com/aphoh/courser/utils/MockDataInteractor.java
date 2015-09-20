@@ -82,11 +82,11 @@ public class MockDataInteractor implements DataInteractor {
         return Observable.create(new OnSubscribe<List<Assignment>>() {
             @Override
             public void call(Subscriber<? super List<Assignment>> subscriber) {
-                List<Assignment> assignments = new ArrayList<>();
+                List<Assignment> result = new ArrayList<>();
                 for (Assignment assignment : assignments) {
-                    if (assignment.getCourse().getId() == courseId) assignments.add(assignment);
+                    if (assignment.getCourse().getId() == courseId) result.add(assignment);
                 }
-                subscriber.onNext(assignments);
+                subscriber.onNext(result);
             }
         });
     }

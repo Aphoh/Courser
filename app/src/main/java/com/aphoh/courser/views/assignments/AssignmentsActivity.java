@@ -92,7 +92,7 @@ public class AssignmentsActivity extends NucleusActivity<AssignmentsPresenter> i
                         .input("Name", null, false, new MaterialDialog.InputCallback() {
                             @Override
                             public void onInput(MaterialDialog materialDialog, CharSequence charSequence) {
-                                getPresenter().requestCreateAssignment(charSequence.toString());
+                                getPresenter().requestCreateAssignment(courseId, charSequence.toString());
                                 log.toast(AssignmentsActivity.this, "Creating course...");
                             }
                         })

@@ -50,7 +50,7 @@ public class AssignmentsPresenter extends BasePresenter<AssignmentsView> {
         start(ASSIGNMENTS_FETCH);
     }
 
-    public void requestCreateAssignment(final String name) {
+    public void requestCreateAssignment(final long courseId, final String name) {
         restartableFirst(ASSIGNMENT_CREATE,
                 new Func0<Observable<Assignment>>() {
                     @Override
