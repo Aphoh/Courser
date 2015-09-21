@@ -1,4 +1,4 @@
-package com.aphoh.courser.utils.model;
+package test.model;
 
 import com.aphoh.courser.db.DataInteractor;
 

@@ -2,10 +2,10 @@ package com.aphoh.courser.utils;
 
 import com.aphoh.courser.db.DataInteractor;
 import com.aphoh.courser.db.DateUtils;
-import com.aphoh.courser.utils.model.MockAssignment;
-import com.aphoh.courser.utils.model.MockCourse;
-import com.aphoh.courser.utils.model.MockStudent;
-import com.aphoh.courser.utils.model.MockSubmission;
+import test.model.MockAssignment;
+import test.model.MockCourse;
+import test.model.MockStudent;
+import test.model.MockSubmission;
 
 import org.joda.time.DateTime;
 
