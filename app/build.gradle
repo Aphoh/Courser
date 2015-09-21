@@ -12,8 +12,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner
-        "com.aphoh.courser.rx.RxAndroidJUnitRunner"
+        testInstrumentationRunner "com.aphoh.courser.rx.RxAndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -49,9 +48,16 @@ dependencies {
     testCompile 'junit:junit:4.12'
     testCompile "org.robolectric:robolectric:3.0"
     //Instrumentation Testing
-    androidTestCompile 'com.android.support:support-annotations:23.0.1'
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2'
-    androidTestCompile 'com.android.support.test:runner:0.3'
+    androidTestCompile ('com.android.support.test.espresso:espresso-core:2.2'){
+        exclude module: 'support-annotations'
+    }
+    androidTestCompile ('com.android.support.test:runner:0.3'){
+        exclude module: 'support-annotations'
+    }
+    androidTestCompile ('com.android.support.test:rules:0.3'){
+        exclude module: 'support-annotations'
+    }
+
     //Debugging
     compile 'com.facebook.stetho:stetho:1.1.1'
 }

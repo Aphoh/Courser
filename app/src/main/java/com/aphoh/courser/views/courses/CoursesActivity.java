@@ -8,15 +8,18 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.aphoh.courser.R;
 import com.aphoh.courser.db.DataInteractor;
 import com.aphoh.courser.db.DataInteractor.Course;
+import com.aphoh.courser.db.DataInteractor.Student;
 import com.aphoh.courser.util.DividerItemDecoration;
 import com.aphoh.courser.util.ItemClickListener;
 import com.aphoh.courser.util.LogUtil;
 import com.aphoh.courser.view.MultiInputMaterialDialogBuilder;
+import com.aphoh.courser.view.adapter.SingleLineAdapter;
 import com.aphoh.courser.views.assignments.AssignmentsActivity;
 
 import java.util.List;
@@ -25,12 +28,15 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import nucleus.factory.RequiresPresenter;
 import nucleus.view.NucleusActivity;
+import rx.functions.Func1;
 
 @RequiresPresenter(CoursesPresenter.class)
 public class CoursesActivity extends NucleusActivity<CoursesPresenter> implements CoursesView {
     LogUtil log = new LogUtil(CoursesActivity.class.getSimpleName());
     @Bind(R.id.activity_courses_recyclerview) RecyclerView recyclerView;
-    CoursesAdapter adapter;
+    @Bind(R.id.placeholder) TextView placeholder;
+    SingleLineAdapter<Course> courseAdapter;
+    SingleLineAdapter<Student> studentAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,14 +46,42 @@ public class CoursesActivity extends NucleusActivity<CoursesPresenter> implement
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this));
-        recyclerView.setAdapter(adapter = new CoursesAdapter(this));
-        adapter.setClickListener(new ItemClickListener<Course>() {
+        courseAdapter = new SingleLineAdapter<>(this,
+                new Func1<Course, String>() {
+                    @Override
+                    public String call(Course course) {
+                        return course.getName();
+                    }
+                },
+                new Func1<Course, String>() {
+                    @Override
+                    public String call(Course course) {
+                        return course.getTerm();
+                    }
+                });
+
+        studentAdapter = new SingleLineAdapter<>(this,
+                new Func1<Student, String>() {
+                    @Override
+                    public String call(Student student) {
+                        return student.getName();
+                    }
+                },
+                new Func1<Student, String>() {
+                    @Override
+                    public String call(Student student) {
+                        return String.valueOf(student.getAge());
+                    }
+                });
+
+        courseAdapter.setItemClickListener(new ItemClickListener<Course>() {
             @Override
             public void onItemClick(Course obj, View view, int position) {
                 startActivity(AssignmentsActivity.IntentFactory.withCourseId(CoursesActivity.this, obj.getId()));
             }
         });
-        adapter.setLongClickListener(new ItemClickListener<Course>() {
+
+        courseAdapter.setLongClickListener(new ItemClickListener<Course>() {
             @Override
             public void onItemClick(final Course obj, View view, int position) {
                 new MaterialDialog.Builder(CoursesActivity.this)
@@ -72,18 +106,51 @@ public class CoursesActivity extends NucleusActivity<CoursesPresenter> implement
             }
         });
 
+        studentAdapter.setItemClickListener(new ItemClickListener<Student>() {
+            @Override
+            public void onItemClick(Student obj, View view, int position) {
+
+            }
+        });
+
+        studentAdapter.setLongClickListener(new ItemClickListener<Student>() {
+            @Override
+            public void onItemClick(Student obj, View view, int position) {
+
+            }
+        });
+
         getPresenter().requestCourses();
-        getPresenter().requestStudents();
     }
 
     @Override
     public void publishCourses(List<Course> courseList) {
-        adapter.setCourses(courseList);
+        courseAdapter.setData(courseList);
+        recyclerView.setAdapter(courseAdapter);
+        if (courseList.size() > 0) {
+            placeholder.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+
+            courseAdapter.setData(courseList);
+        } else {
+            recyclerView.setVisibility(View.GONE);
+            placeholder.setVisibility(View.VISIBLE);
+        }
+
     }
 
     @Override
-    public void publishStudents(List<DataInteractor.Student> students) {
+    public void publishStudents(List<Student> students) {
+        recyclerView.setAdapter(studentAdapter);
+        if (students.size() > 0) {
+            placeholder.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
 
+            studentAdapter.setData(students);
+        } else {
+            recyclerView.setVisibility(View.GONE);
+            placeholder.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

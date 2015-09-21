@@ -15,9 +15,7 @@ public class RxAndroidJUnitRunner extends AndroidJUnitRunner{
     public void onCreate(Bundle arguments) {
         RxJavaPlugins.getInstance().registerObservableExecutionHook(RxIdlingResource.get());
 
-        RxIdlingResource.setLogLevel(RxIdlingResource.LogLevel.VERBOSE);
-
-        Log.d("TESTING", "TESTS STARTING");
+        RxIdlingResource.setLogLevel(RxIdlingResource.LogLevel.DEBUG);
 
         super.onCreate(arguments);
     }

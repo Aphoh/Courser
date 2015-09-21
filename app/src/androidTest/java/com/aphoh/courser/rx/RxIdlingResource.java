@@ -1,4 +1,5 @@
 package com.aphoh.courser.rx;
+
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingResource;
 import android.util.Log;
@@ -9,7 +10,10 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.plugins.RxJavaObservableExecutionHook;
 
-import static com.aphoh.courser.rx.RxIdlingResource.LogLevel.*;
+import static com.aphoh.courser.rx.RxIdlingResource.LogLevel.DEBUG;
+import static com.aphoh.courser.rx.RxIdlingResource.LogLevel.NONE;
+import static com.aphoh.courser.rx.RxIdlingResource.LogLevel.VERBOSE;
+
 /**
  * Provides the hooks for both RxJava and Espresso so that Espresso knows when to wait
  * until RxJava subscriptions have completed.
@@ -38,7 +42,7 @@ public final class RxIdlingResource extends RxJavaObservableExecutionHook implem
         return INSTANCE;
     }
 
-    public static void setLogLevel(LogLevel logLevel){
+    public static void setLogLevel(LogLevel logLevel) {
         LOG_LEVEL = logLevel;
     }
 
@@ -89,9 +93,14 @@ public final class RxIdlingResource extends RxJavaObservableExecutionHook implem
         }
 
         onSubscribe.call(new Subscriber<T>() {
+            boolean done = false;
+
             @Override
             public void onCompleted() {
-                onFinally(onSubscribe, "onCompleted");
+                if (!done) {
+                    done = true;
+                    onFinally(onSubscribe, "onComplete");
+                }
             }
 
             @Override
@@ -101,7 +110,10 @@ public final class RxIdlingResource extends RxJavaObservableExecutionHook implem
 
             @Override
             public void onNext(T t) {
-                //nothing
+                if(!done){
+                    done = true;
+                    onFinally(onSubscribe, "onNext");
+                }
             }
         });
 

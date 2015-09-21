@@ -1,6 +1,5 @@
 package com.aphoh.courser.views.courses;
 
-import com.aphoh.courser.App;
 import com.aphoh.courser.base.DaggerAppComponent;
 import com.aphoh.courser.base.Injector;
 import com.aphoh.courser.db.DataInteractor.Course;
@@ -8,10 +7,9 @@ import com.aphoh.courser.db.DataInteractor.Student;
 import com.aphoh.courser.utils.MockDataInteractor;
 import com.aphoh.courser.utils.MockDataModule;
 import com.aphoh.courser.utils.MockSchedulerModule;
-import com.aphoh.courser.utils.model.MockCourse;
-import com.aphoh.courser.utils.model.MockStudent;
+import test.model.MockCourse;
+import test.model.MockStudent;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;

@@ -4,14 +4,13 @@ import com.aphoh.courser.BuildConfig;
 import com.aphoh.courser.TestApp;
 import com.aphoh.courser.base.DaggerAppComponent;
 import com.aphoh.courser.base.Injector;
-import com.aphoh.courser.db.DataInteractor;
 import com.aphoh.courser.db.DataInteractor.Assignment;
 import com.aphoh.courser.db.DateUtils;
 import com.aphoh.courser.utils.MockDataInteractor;
 import com.aphoh.courser.utils.MockDataModule;
 import com.aphoh.courser.utils.MockSchedulerModule;
-import com.aphoh.courser.utils.model.MockAssignment;
-import com.aphoh.courser.utils.model.MockCourse;
+import test.model.MockAssignment;
+import test.model.MockCourse;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

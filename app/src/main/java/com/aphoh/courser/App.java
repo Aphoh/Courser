@@ -1,6 +1,5 @@
 package com.aphoh.courser;
 
-import com.aphoh.courser.base.AppComponent;
 import com.aphoh.courser.base.DaggerAppComponent;
 import com.aphoh.courser.base.DataModule;
 import com.aphoh.courser.base.Injector;
